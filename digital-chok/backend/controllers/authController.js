@@ -5,60 +5,93 @@ const jwt = require("jsonwebtoken");
 // SIGNUP
 const signup = async (req, res) => {
   try {
-    const { name, email, phone, password, role } = req.body;
+    const {
+      name,
+      email,
+      phone,
+      password,
+      role,
+      address,
+    } = req.body;
 
-    if (!name || !email || !phone || !password || !role) {
+    if (
+      !name ||
+      !email ||
+      !phone ||
+      !password ||
+      !role ||
+      !address?.address ||
+      !address?.city ||
+      !address?.state ||
+      !address?.country
+    ) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required"
+        message: "All fields are required",
       });
     }
 
     if (!["customer", "provider"].includes(role)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid role"
+        message: "Invalid role",
       });
     }
 
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "Email already registered"
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await User.create({
-      name,
-      email,
-      phone,
-      password: hashedPassword,
-      role
+    const existingUser = await User.findOne({
+      email: email.toLowerCase().trim(),
     });
 
-    res.status(201).json({
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: "Email already registered",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const user = await User.create({
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
+      phone,
+      password: hashedPassword,
+      role,
+
+      address: {
+        address: address.address,
+        city: address.city,
+        state: address.state,
+        country: address.country,
+        latitude: address.latitude ?? null,
+        longitude: address.longitude ?? null,
+      },
+    });
+
+    return res.status(201).json({
       success: true,
-      message: "Registration successful",
+      message: "Account created successfully",
+
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
         phone: user.phone,
-        role: user.role
-      }
+        role: user.role,
+        address: user.address,
+      },
     });
-
   } catch (error) {
-    res.status(500).json({
+    console.error("Signup Error:", error);
+
+    return res.status(500).json({
       success: false,
-      message: error.message
+      message: "Internal server error",
     });
   }
 };
+
+
 
 // LOGIN
 const login = async (req, res) => {

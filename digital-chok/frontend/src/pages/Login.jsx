@@ -1,265 +1,198 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-function Login() {
-    const [phone, setPhone] = useState("");
-    const [loading, setLoading] = useState(false);
-
-    const navigate = useNavigate();
-
-    const handleContinue = () => {
-        if (phone.length !== 10) {
-            alert("Please enter a valid 10 digit mobile number");
-            return;
-        }
-
-        setLoading(true);
-
-        localStorage.setItem("phone", phone);
-
-        setTimeout(() => {
-            navigate("/role");
-        }, 700);
-    };
-
-    return (
-        <div className="min-h-screen bg-white flex justify-center">
-
-            {/* MAIN MOBILE CONTAINER */}
-
-            <div className="w-full max-w-[430px] min-h-screen px-6 py-8 flex flex-col">
-
-                {/* LOGO */}
-
-                <div className="flex items-center gap-3">
-
-                    <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center shadow-sm overflow-hidden ">
-                        <img
-                            src="/Futuristic Digital Chok Neon Logo (1).png"
-                            alt="Digital Chok Logo"
-                            className="w-full h-full object-contain"
-                        />
-                    </div>
-
-                    <div>
-                        <h1 className="text-xl font-bold text-slate-900">
-                            Digital Chok
-                        </h1>
-
-                        <p className="text-[10px] text-slate-500">
-                            Local Services. Made Easier.
-                        </p>
-                    </div>
-
-                </div>
-
-
-                {/* LOGIN CONTENT */}
-
-                <div className="flex-1 flex flex-col justify-center">
-
-                    <div className="mb-8">
-
-                        <h2 className="text-[30px] leading-tight font-bold text-slate-900">
-                            Your Digital Journey
-                            <br />
-                            Begins Here
-                        </h2>
-
-                    </div>
-
-
-                    {/* PHONE INPUT */}
-
-                    <div className="mb-5">
-
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">
-                            Mobile Number
-                        </label>
-
-                        <div className="flex items-center h-14 border border-slate-200 rounded-xl bg-white focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100 transition">
-
-                            {/* COUNTRY */}
-
-                            <div className="flex items-center gap-2 px-4">
-
-                                <div className="flex items-center border-gray-300 rounded-xl overflow-hidden">
-
-                                    <select
-                                        className="h-12 px-3 bg-white text-gray-700 outline-none cursor-pointer"
-                                        defaultValue="+91"
-                                    >
-                                        <option value="+91">🇮🇳 +91</option>
-                                        <option value="+1">🇺🇸 +1</option>
-                                        <option value="+44">🇬🇧 +44</option>
-                                        <option value="+61">🇦🇺 +61</option>
-                                        <option value="+971">🇦🇪 +971</option>
-                                        <option value="+65">🇸🇬 +65</option>
-                                        <option value="+81">🇯🇵 +81</option>
-                                        <option value="+49">🇩🇪 +49</option>
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-
-                            {/* DIVIDER */}
-
-                            <div className="h-7 w-px bg-slate-200"></div>
-
-
-                            {/* INPUT */}
-
-                            <input
-                                type="tel"
-                                value={phone}
-                                maxLength={10}
-                                placeholder="Enter phone number"
-                                className="flex-1 h-full px-4 outline-none text-sm text-slate-800 placeholder:text-slate-400 bg-transparent"
-                                onChange={(e) =>
-                                    setPhone(
-                                        e.target.value.replace(/\D/g, "")
-                                    )
-                                }
-                            />
-
-                            {phone.length === 10 && (
-                                <span className="text-green-500 font-bold mr-4">
-                                    ✓
-                                </span>
-                            )}
-
-                        </div>
-
-                        <p className="text-[11px] text-slate-400 mt-2">
-                            We'll send you a verification code
-                        </p>
-
-                    </div>
-
-
-                    {/* CONTINUE BUTTON */}
-
-                    <button
-                        onClick={handleContinue}
-                        disabled={loading}
-                        className="w-full h-14 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-semibold text-sm flex items-center justify-center gap-2 transition disabled:opacity-70"
-                    >
-
-                        {loading ? (
-                            <>
-                                <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin"></span>
-
-                                Please wait...
-                            </>
-                        ) : (
-                            <>
-                                Continue
-
-                                <span className="text-lg">
-                                    →
-                                </span>
-                            </>
-                        )}
-
-                    </button>
-
-
-                    {/* DIVIDER */}
-
-                    <div className="flex items-center gap-4 my-7">
-
-                        <div className="flex-1 h-px bg-slate-200"></div>
-
-                        <span className="text-[11px] text-slate-400">
-                            OR
-                        </span>
-
-                        <div className="flex-1 h-px bg-slate-200"></div>
-
-                    </div>
-
-
-                    {/* FACEBOOK */}
-
-                    <button
-                        className="w-full h-13 min-h-[52px] border border-slate-200 rounded-xl bg-white hover:bg-slate-50 flex items-center justify-center gap-3 text-sm font-semibold text-slate-700 transition"
-                    >
-
-                        <span className="google-icon">
-                            <img
-                                src="/Facebook_Logo_2023.png"
-                                alt="Facebook"
-                                className="w-5 h-5"
-                            />
-                        </span>
-
-                        Login with Facebook
-
-                    </button>
-                    <br></br>
-
-
-                    {/* GOOGLE */}
-
-                    <button className="w-full h-12 flex items-center justify-center gap-3 border border-gray-300 rounded-xl bg-white hover:bg-gray-50 text-gray-700 font-medium transition">
-
-                        <span className="google-icon">
-                            <img
-                                src="/Google__G__logo.svg.webp"
-                                alt="Google"
-                                className="w-5 h-5"
-                            />
-                        </span>
-
-                        <span>
-                            Continue with Google
-                        </span>
-
-                    </button>
-
-
-                    {/* SIGN UP */}
-
-                    <div className="text-center mt-8">
-
-                        <p className="text-sm text-slate-500">
-
-                            Don't have an account?
-
-                            <Link
-                                to="/signup"
-                                className="ml-1 text-blue-600 font-semibold hover:underline"
-                            >
-                                Sign Up
-                            </Link>
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                {/* BOTTOM */}
-
-                <div className="text-center pt-6">
-
-                    <p className="text-[10px] text-slate-400">
-                        By continuing, you agree to our
-                    </p>
-
-                    <p className="text-[10px] text-slate-400 mt-1">
-                        Terms of Service &nbsp;•&nbsp; Privacy Policy
-                    </p>
-
-                </div>
-
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
+import axiosInstance from "../api/axiosInstance";
+
+const Login = () => {
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await axiosInstance.post("/auth/login", {
+        email: form.email.trim().toLowerCase(),
+        password: form.password,
+      });
+
+      const { token, user } = response.data;
+
+      // Store authentication token, never the password
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Redirect after successful login
+      navigate("/home");
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Login failed. Please check your credentials."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-10">
+      <div className="w-full max-w-md">
+
+        {/* Logo */}
+        <Link
+          to="/"
+          className="flex justify-center items-center gap-2 mb-8"
+        >
+          <div className="bg-blue-600 text-white rounded-xl p-3">
+            <span className="text-xl font-bold">DC</span>
+          </div>
+
+          <span className="text-2xl font-bold text-slate-900">
+            Digital <span className="text-blue-600">Chok</span>
+          </span>
+        </Link>
+
+        {/* Login Card */}
+        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-8 sm:p-10">
+
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-slate-900">
+              Welcome back!
+            </h1>
+
+            <p className="text-slate-500 mt-2">
+              Login to access your Digital Chok account
+            </p>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-5 rounded-xl bg-red-50 border border-red-200 p-3 text-sm text-red-600">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+
+            {/* Email */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold text-slate-700 mb-2"
+              >
+                Email Address
+              </label>
+
+              <div className="relative">
+                <Mail
+                  size={20}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                />
+
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  required
+                  autoComplete="email"
+                  className="w-full rounded-xl border border-slate-200 py-3.5 pl-12 pr-4 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                />
+              </div>
             </div>
 
+            {/* Password */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-slate-700 mb-2"
+              >
+                Password
+              </label>
+
+              <div className="relative">
+                <Lock
+                  size={20}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                />
+
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder="Enter your password"
+                  required
+                  autoComplete="current-password"
+                  className="w-full rounded-xl border border-slate-200 py-3.5 pl-12 pr-12 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? "Logging in..." : "Login to your account"}
+
+              {!loading && <ArrowRight size={20} />}
+            </button>
+          </form>
+
+          {/* Signup Link */}
+          <p className="text-center text-sm text-slate-500 mt-7">
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className="font-semibold text-blue-600 hover:text-blue-700"
+            >
+              Create account
+            </Link>
+          </p>
         </div>
-    );
-}
+
+        <p className="text-center text-xs text-slate-400 mt-6">
+          © {new Date().getFullYear()} Digital Chok. All rights reserved.
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export default Login;
