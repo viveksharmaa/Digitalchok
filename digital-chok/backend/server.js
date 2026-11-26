@@ -3,6 +3,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
@@ -11,13 +12,18 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Parse cookies before authentication routes
+app.use(cookieParser());
 
 // MongoDB Connection
 connectDB();
@@ -26,7 +32,7 @@ connectDB();
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Digital Chok Backend is Running"
+    message: "Digital Chok Backend is Running",
   });
 });
 
@@ -37,7 +43,7 @@ app.get("/api/health", (req, res) => {
   res.status(isConnected ? 200 : 503).json({
     server: "Running",
     database: isConnected ? "Connected" : "Disconnected",
-    success: isConnected
+    success: isConnected,
   });
 });
 
@@ -45,7 +51,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/v1/auth", authRoutes);
 
 // Server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

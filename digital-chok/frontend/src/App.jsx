@@ -1,6 +1,6 @@
+
 import React from "react";
 import {
-  BrowserRouter,
   Routes,
   Route,
   Navigate,
@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import RoleSelection from "./pages/RoleSelection";
 import Location from "./pages/Location";
+
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ProviderList from "./pages/ProviderList";
@@ -18,66 +19,31 @@ import ProviderProfile from "./pages/ProviderProfile";
 import Booking from "./pages/Booking";
 import ProviderProfileForm from "./pages/ProviderProfileForm";
 import ProviderDashboard from "./pages/ProviderDashboard";
+import Profile from "./pages/userprofile/Profile";
+
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Routes>
+      {/* Public routes */}
+      <Route path="/" element={<LandingPage />} />
 
-      <Routes>
+      <Route path="/login" element={<Login />} />
 
-        {/* =========================
-            AUTHENTICATION
-        ========================= */}
+      <Route path="/signup" element={<Signup />} />
 
-        <Route
-          path="/"
-          element={<LandingPage/>}
-        />
+      <Route path="/role" element={<RoleSelection />} />
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+      <Route path="/location" element={<Location />} />
 
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
+      {/* Protected routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/home" element={<Home />} />
 
+        <Route path="/services" element={<Services />} />
 
-        {/* =========================
-            USER SETUP
-        ========================= */}
-
-        <Route
-          path="/role"
-          element={<RoleSelection />}
-        />
-
-        <Route
-          path="/location"
-          element={<Location />}
-        />
-
-
-        {/* =========================
-            MAIN APP
-        ========================= */}
-
-        <Route
-          path="/home"
-          element={<Home />}
-        />
-
-        <Route
-          path="/services"
-          element={<Services />}
-        />
-
-        <Route
-          path="/providers"
-          element={<ProviderList />}
-        />
+        <Route path="/providers" element={<ProviderList />} />
 
         <Route
           path="/provider-profile"
@@ -94,24 +60,17 @@ function App() {
           element={<ProviderDashboard />}
         />
 
-        <Route
-          path="/booking"
-          element={<Booking />}
-        />
+        <Route path="/booking" element={<Booking />} />
 
+        <Route path="/profile" element={<Profile />} />
+      </Route>
 
-        {/* =========================
-            FALLBACK
-        ========================= */}
-
-        <Route
-          path="*"
-          element={<Navigate to="/login" replace />}
-        />
-
-      </Routes>
-
-    </BrowserRouter>
+      {/* Fallback */}
+      <Route
+        path="*"
+        element={<Navigate to="/" replace />}
+      />
+    </Routes>
   );
 }
 

@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import axiosInstance from "../api/axiosInstance";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [form, setForm] = useState({
     email: "",
@@ -29,23 +31,16 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axiosInstance.post("/auth/login", {
-        email: form.email.trim().toLowerCase(),
-        password: form.password,
-      });
+      await login(form.email, form.password);
 
-      const { token, user } = response.data;
+      const destination =
+        location.state?.from?.pathname || "/home";
 
-      // Store authentication token, never the password
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      // Redirect after successful login
-      navigate("/home");
-    } catch (err) {
+      navigate(destination, { replace: true });
+    } catch (error) {
       setError(
-        err.response?.data?.message ||
-          "Login failed. Please check your credentials."
+        error.response?.data?.message ||
+        "Invalid email or password"
       );
     } finally {
       setLoading(false);
